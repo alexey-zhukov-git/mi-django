@@ -1,0 +1,13 @@
+from django.db import models
+from django.contrib.auth.models import User
+
+# Create your models here.
+
+class Order(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    title = models.CharField(max_length=50, verbose_name='Название кейса')
+    content = models.TextField(default='', verbose_name='Описание')
+    price = models.IntegerField(default=0, verbose_name='Бюджет')
+    status = models.CharField(verbose_name='status', max_length=50, default='Создано')
+    created_at = models.DateTimeField(auto_now_add=True, db_index=True)
+    edited_at = models.DateTimeField(auto_now=True)

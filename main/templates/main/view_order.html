@@ -1,0 +1,18 @@
+{% extends "main/base.html" %}
+
+{% block title %}Личный кабинет{% endblock %}
+
+{% block content %}
+{% if user.is_authenticated %}
+<h2>Просморт кейса</h2>
+    <h3>Кейс ID {{ order.id }}</h3>
+    <h4>{{ order.title }}</h4>
+    <p>{{ order.content }}</p>
+    <p>{{ order.price }} руб.</p>
+    <div>
+        <a href="#">К списку кейсов</a>
+    </div><br>
+{% else %}
+<p>Вы не авторизованы</p>
+{% endif %}
+{% endblock %}

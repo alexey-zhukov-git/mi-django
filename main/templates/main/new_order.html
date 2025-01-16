@@ -1,0 +1,15 @@
+{% extends "main/base.html" %}
+
+{% block title %}Личный кабинет{% endblock %}
+
+{% block content %}
+{% if user.is_authenticated %}
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Отправить</button>
+</form>
+{% else %}
+<p>Вы не авторизованы</p>
+{% endif %}
+{% endblock %}
