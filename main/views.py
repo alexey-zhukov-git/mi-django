@@ -3,7 +3,7 @@ from django.http import HttpResponse
 from django.template import loader
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.forms import UserCreationForm
-from .forms import OrderForm, SignUpForm
+from .forms import OrderForm, UserRegistrationForm
 from .models import Order
 
 # Create your views here.
@@ -30,20 +30,20 @@ def profile(request):
 
 def registration(request):
     if request.method == 'POST':
-        form = UserCreationForm(request.POST)
-        if form.is_valid():
-            form.save()
-            # получаем имя пользователя и пароль из формы
-            username = form.cleaned_data.get('username')
-            password = form.cleaned_data.get('password1')
-            # выполняем аутентификацию
-            user = authenticate(username=username, password=password)
-            login(request, user)
-            return redirect('/')
+        user_form = UserRegistrationForm(request.POST)
+        if user_form.is_valid():
+            # Create a new user object but avoid saving it yet
+            new_user = user_form.save(commit=False)
+            # Set the chosen password
+            new_user.set_password(user_form.cleaned_data['password'])
+            # Save the User object
+            new_user.save()
+            login(request, new_user, backend='django.contrib.auth.backends.ModelBackend')
+            return render(request, 'main/profile.html', {'new_user': new_user})
     else:
-        form = SignUpForm()
-    return render(request, 'main/registration.html', {'form': form})
-
+        user_form = UserRegistrationForm()
+    return render(request, 'main/registration.html', {'user_form': user_form})
+    
 def new_order(request):
     if request.method == "POST":
         form = OrderForm(request.POST)

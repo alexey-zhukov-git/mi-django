@@ -29,4 +29,5 @@ urlpatterns = [
     path('new/order', new_order, name='new_order'),
     path('delete/<int:pk>', del_order, name='del_order'),
     path('view/<int:pk>', view_order, name='view_order'),
+    path('captcha/', include('captcha.urls')),
 ]
