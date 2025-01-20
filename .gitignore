@@ -1,3 +1,5 @@
 /microint/settings.py
 /.vscode
 db.sqlite3
+main/__pycache__
+microint/__pycache__
