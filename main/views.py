@@ -5,6 +5,8 @@ from django.contrib.auth import login, authenticate
 from django.contrib.auth.forms import UserCreationForm
 from .forms import OrderForm, UserRegistrationForm
 from .models import Order
+from django.core.mail import send_mail
+from django.conf import settings
 
 # Create your views here.
 
@@ -39,6 +41,8 @@ def registration(request):
             # Save the User object
             new_user.save()
             login(request, new_user, backend='django.contrib.auth.backends.ModelBackend')
+            msg = 'Пользователь с email %s зарегистрирован' % new_user.email
+            send_mail('Django mail', msg, 'mail@microintervals.ru', ['a@core-i5.ru'], fail_silently=False)
             return render(request, 'main/profile.html', {'new_user': new_user})
     else:
         user_form = UserRegistrationForm()
@@ -51,6 +55,8 @@ def new_order(request):
             post = form.save(commit=False)
             post.user_id = request.user.id
             post.save()
+            msg = 'На сайте создан новый кейс. Создал пользователь %s' % request.user.email
+            send_mail('Django mail', msg, 'mail@microintervals.ru', ['a@core-i5.ru'], fail_silently=False)
             return redirect('/accounts/profile/', pk=post.pk)
     else:
         form = OrderForm()
