@@ -4,6 +4,7 @@
 
 {% block content %}
 {% if user.is_authenticated %}
+<h2><u>Новый кейс</u></h2>
 <form method="post">
     {% csrf_token %}
     {{ form.as_p }}
