@@ -31,19 +31,20 @@
         <td>{{ order.price }}</td>
         <td>{{ order.status }}</td>
         <td>
-            <a href="#"
+            <a href="#" title="Редактировать кейс"
                 class="glyphicon glyphicon-pencil"></a>
         </td>
         <td>
-            <a href="/view/{{ order.id }}"
+            <a href="/view/{{ order.id }}" title="Просмотреть кейс"
                 class="glyphicon glyphicon-eye-open"></a>
         </td>
         <td>
-            <a href="#" onclick="return confirm('Вы уверены, что хотите отменить кейс?')">
-                <span class="glyphicon glyphicon-remove"></span></a>
+            <a href="#" onclick="return confirm('Вы уверены, что хотите отменить кейс?')" title="Отменить кейс"
+                class="glyphicon glyphicon-remove"></a>
         </td>
         <td>
-            <a href="/delete/{{ order.id }}" class="glyphicon glyphicon-trash"></a>
+            <a href="/delete/{{ order.id }}" onclick="return confirm('Вы уверены, что хотите удалить кейс?')" title="Удалить кейс"
+                class="glyphicon glyphicon-trash"></a>
         </td>
     </tr>
 {% endfor %}
