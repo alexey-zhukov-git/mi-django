@@ -78,13 +78,16 @@ def view_order(request, pk):
         return redirect('/')
 
 def edit_order(request, pk):
-    order = Order.objects.get(pk=pk)
-    if request.method == 'POST':
-        form = OrderForm(request.POST, request.FILES, instance=order)
-        if form.is_valid():
-            order = form.save()
-            return redirect('/accounts/profile/')
+    if request.user.is_authenticated and request.user.id == Order.objects.get(pk=pk).user_id:
+        order = Order.objects.get(pk=pk)
+        if request.method == 'POST':
+            form = OrderForm(request.POST, request.FILES, instance=order)
+            if form.is_valid():
+                order = form.save()
+                return redirect('/accounts/profile/')
+        else:
+            form = OrderForm(instance=order)
+            context = {'form': form,}
+            return render(request, 'main/edit_order.html', context)
     else:
-        form = OrderForm(instance=order)
-        context = {'form': form,}
-        return render(request, 'main/edit_order.html', context)
+        return redirect('/')
