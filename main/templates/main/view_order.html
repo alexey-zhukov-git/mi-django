@@ -10,7 +10,7 @@
     <p>{{ order.content }}</p>
     <p>{{ order.price }} руб.</p>
     <div>
-        <a href="#">К списку кейсов</a>
+        <a href="{% url 'profile' %}">К списку кейсов</a>
     </div><br>
 {% else %}
 <p>Вы не авторизованы</p>
