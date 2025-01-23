@@ -31,7 +31,7 @@
         <td>{{ order.price }}</td>
         <td>{{ order.status }}</td>
         <td>
-            <a href="#" title="Редактировать кейс"
+            <a href="{% url 'edit_order' pk=order.pk %}" title="Редактировать кейс"
                 class="glyphicon glyphicon-pencil"></a>
         </td>
         <td>

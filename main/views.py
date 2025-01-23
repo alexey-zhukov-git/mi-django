@@ -76,3 +76,15 @@ def view_order(request, pk):
         return render(request, 'main/view_order.html', {'order': order})
     else:
         return redirect('/')
+
+def edit_order(request, pk):
+    order = Order.objects.get(pk=pk)
+    if request.method == 'POST':
+        form = OrderForm(request.POST, request.FILES, instance=order)
+        if form.is_valid():
+            order = form.save()
+            return redirect('/accounts/profile/')
+    else:
+        form = OrderForm(instance=order)
+        context = {'form': form,}
+        return render(request, 'main/edit_order.html', context)
