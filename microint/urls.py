@@ -22,13 +22,13 @@ from django.contrib.auth import views as authViews
 urlpatterns = [
     path('', include('main.urls')),
     path('admin/', admin.site.urls),
-    path('user/registration/', registration, name='registration'),
+    path('accounts/registration/', registration, name='registration'),
     path('accounts/logout/', authViews.LogoutView.as_view(next_page='/'), name='logout'),
     path('accounts/login/', authViews.LoginView.as_view(next_page='/accounts/profile'), name='login'),
     path('accounts/profile/', profile, name='profile'),
-    path('new/order', new_order, name='new_order'),
-    path('delete/<int:pk>', del_order, name='del_order'),
-    path('view/<int:pk>', view_order, name='view_order'),
+    path('accounts/new-order', new_order, name='new_order'),
+    path('accounts/delete/<int:pk>', del_order, name='del_order'),
+    path('accounts/view/<int:pk>', view_order, name='view_order'),
     path('captcha/', include('captcha.urls')),
-    path('edit/<int:pk>/', edit_order, name='edit_order')
+    path('accounts/edit/<int:pk>/', edit_order, name='edit_order')
 ]

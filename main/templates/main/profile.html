@@ -35,7 +35,7 @@
                 class="glyphicon glyphicon-pencil"></a>
         </td>
         <td>
-            <a href="/view/{{ order.id }}" title="Просмотреть кейс"
+            <a href="{% url 'view_order' pk=order.pk %}" title="Просмотреть кейс"
                 class="glyphicon glyphicon-eye-open"></a>
         </td>
         <td>
@@ -43,7 +43,7 @@
                 class="glyphicon glyphicon-remove"></a>
         </td>
         <td>
-            <a href="/delete/{{ order.id }}" onclick="return confirm('Вы уверены, что хотите удалить кейс?')" title="Удалить кейс"
+            <a href="{% url 'del_order' pk=order.pk %}" onclick="return confirm('Вы уверены, что хотите удалить кейс?')" title="Удалить кейс"
                 class="glyphicon glyphicon-trash"></a>
         </td>
     </tr>

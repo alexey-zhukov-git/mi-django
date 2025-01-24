@@ -26,8 +26,7 @@ def profile(request):
     orders = Order.objects.filter(user_id=id)
     orders_sum = orders.count()
     template = loader.get_template('main/profile.html')
-    title = 'Главная страница'
-    context = {'orders': orders, 'title': title, 'orders_sum': orders_sum}
+    context = {'orders': orders, 'orders_sum': orders_sum}
     return HttpResponse(template.render(context, request))
 
 def registration(request):
