@@ -39,12 +39,8 @@
                 class="glyphicon glyphicon-eye-open"></a>
         </td>
         <td>
-            <a href="#" onclick="return confirm('Вы уверены, что хотите отменить кейс?')" title="Отменить кейс"
+            <a href="{% url 'undo_order' pk=order.pk %}" onclick="return confirm('Вы уверены, что хотите отменить кейс?')" title="Отменить кейс"
                 class="glyphicon glyphicon-remove"></a>
-        </td>
-        <td>
-            <a href="{% url 'del_order' pk=order.pk %}" onclick="return confirm('Вы уверены, что хотите удалить кейс?')" title="Удалить кейс"
-                class="glyphicon glyphicon-trash"></a>
         </td>
     </tr>
 {% endfor %}

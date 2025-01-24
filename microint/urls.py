@@ -16,7 +16,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from main.views import registration, profile, new_order, del_order, view_order, edit_order
+from main.views import registration, profile, new_order, view_order, edit_order, undo_order
 from django.contrib.auth import views as authViews
 
 urlpatterns = [
@@ -27,8 +27,8 @@ urlpatterns = [
     path('accounts/login/', authViews.LoginView.as_view(next_page='/accounts/profile'), name='login'),
     path('accounts/profile/', profile, name='profile'),
     path('accounts/new-order', new_order, name='new_order'),
-    path('accounts/delete/<int:pk>', del_order, name='del_order'),
     path('accounts/view/<int:pk>', view_order, name='view_order'),
-    path('captcha/', include('captcha.urls')),
-    path('accounts/edit/<int:pk>/', edit_order, name='edit_order')
+    path('accounts/edit/<int:pk>/', edit_order, name='edit_order'),
+    path('accounts/undo/<int:pk>/', undo_order, name='undo_order'),
+    path('captcha/', include('captcha.urls'))
 ]

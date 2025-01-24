@@ -61,14 +61,6 @@ def new_order(request):
         form = OrderForm()
         return render(request, 'main/new_order.html', {'form': form})
 
-def del_order(request, pk):
-    if request.user.is_authenticated and request.user.id == Order.objects.get(pk=pk).user_id:
-        order = Order.objects.get(pk=pk)
-        order.delete()
-        return redirect('/accounts/profile/')
-    else:
-        return redirect('/')
-
 def view_order(request, pk):
     if request.user.is_authenticated and request.user.id == Order.objects.get(pk=pk).user_id:
         order = Order.objects.get(pk=pk)
@@ -88,5 +80,14 @@ def edit_order(request, pk):
             form = OrderForm(instance=order)
             context = {'form': form,}
             return render(request, 'main/edit_order.html', context)
+    else:
+        return redirect('/')
+
+def undo_order(request, pk):
+    if request.user.is_authenticated and request.user.id == Order.objects.get(pk=pk).user_id:
+        order = Order.objects.get(pk=pk)
+        order.status = 'Отменен заказчиком'
+        order.save()
+        return redirect('/accounts/profile/')
     else:
         return redirect('/')
