@@ -104,3 +104,8 @@ def undo_order(request, pk):
         return redirect('/accounts/profile/')
     else:
         return redirect('/')
+
+def privacy(request):
+    template = loader.get_template('main/privacy-policy.html')
+    context = {}
+    return HttpResponse(template.render(context, request))
