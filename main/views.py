@@ -11,8 +11,21 @@ from django.conf import settings
 # Create your views here.
 
 def index(request):
+    total_orders = Order.objects.count()
+    cancelled_by_user_orders = Order.objects.filter(status='Отменен заказчиком').count()
+    cancelled_by_admin_orders = Order.objects.filter(status='Отменен администратором').count()
+    total_cancelled_orders = cancelled_by_user_orders + cancelled_by_admin_orders
+    under_consideration_orders = Order.objects.filter(status='На рассмотрении').count()
+    in_progress_orders = Order.objects.filter(status='В работе').count()
+    done_orders = Order.objects.filter(status='Завершено').count()
     template = loader.get_template('main/home.html')
-    context = {}
+    context = {
+        'total_orders': total_orders,
+        'total_cancelled_orders': total_cancelled_orders,
+        'under_consideration_orders': under_consideration_orders,
+        'in_progress_orders': in_progress_orders,
+        'done_orders': done_orders
+        }
     return HttpResponse(template.render(context, request))
 
 def contacts(request):

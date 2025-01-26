@@ -4,7 +4,7 @@
 
 {% block content %}
 <h2><u>Главная страница</u></h2>
-<!--<button type="button" class="btn btn-info" data-toggle="collapse" data-target="#demo">Показать вводную информацию</button>
+<!-- <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#demo">Показать вводную информацию</button>
     <div id="demo" class="collapse"> -->
         <div class="row">
             <div class="col-sm-4">
@@ -25,4 +25,59 @@
             </div>
         </div>
     <!-- </div> -->
+    <h2 style="text-decoration: underline;">Статистика</h2>
+    <div class="panel-group">
+        <div class="panel panel-default">
+            <div class="panel-heading">Общее число кейсов</div>
+            <div class="panel-body"><span class="badge">{{ total_orders }}</span>
+            </div>
+        </div>
+
+        <div class="panel panel-primary">
+            <div class="panel-heading">В работе</div>
+            <div class="panel-body"><span class="badge">{{ in_progress_orders}}</span><div><br></div>
+                <!--<div class="progress">
+                    <div class="progress-bar progress-bar-primary" role="progressbar" style="width: 0%">
+                    </div>
+                </div>-->
+            </div>
+        </div>
+
+        <div class="panel panel-success">
+            <div class="panel-heading">Завершено</div>
+                <div class="panel-body"><span class="badge">{{ done_orders }}</span><div><br></div>
+                    <!--<div class="progress">
+                        <div class="progress-bar progress-bar-success" role="progressbar" style="width: 0%">
+                        </div>
+                    </div>-->
+                </div>
+        </div>
+
+        <div class="panel panel-info">
+            <div class="panel-heading">На рассмотрении</div>
+            <div class="panel-body"><span class="badge">{{ under_consideration_orders }}</span><div><br></div>
+                <!--<div class="progress">
+                    <div class="progress-bar progress-bar-info" role="progressbar" style="width: 0%">
+                    </div>
+                </div>-->
+            </div>
+        </div>
+
+        <div class="panel panel-warning">
+            <div class="panel-heading">Степень нашей загруженности <span class="label label-default">New</span></div>
+            <div class="panel-body"><span class="badge">Средняя</span>
+            </div>
+        </div>
+
+        <div class="panel panel-danger">
+            <div class="panel-heading">Отменено</div>
+            <div class="panel-body"><span class="badge">{{ total_cancelled_orders }}</span><div><br></div>
+                <!--<div class="progress">
+                    <div class="progress-bar progress-bar-danger" role="progressbar" style="width: 0%">
+                    </div>
+                </div>-->
+            </div>
+        </div>
+    </div>
+
 {% endblock %}
