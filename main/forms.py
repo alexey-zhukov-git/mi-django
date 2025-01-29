@@ -1,8 +1,9 @@
 from django import forms
 from .models import Order
 # from django.contrib.auth.forms import UserCreationForm
-from django.contrib.auth.models import User
 from captcha.fields import CaptchaField
+from django.contrib.auth import get_user_model
+User = get_user_model()
 
 class OrderForm(forms.ModelForm):
     class Meta:
