@@ -34,3 +34,10 @@ class UserRegistrationForm(forms.ModelForm):
         if cd['password'] != cd['password2']:
             raise forms.ValidationError('Пароли не совпадают')
         return cd['password2']
+
+class LoginForm(forms.Form):
+    username = forms.CharField(label='Имя пользователя', widget=forms.TextInput(
+        attrs={'class': 'form-control'}
+    ))
+    password = forms.CharField(label='Пароль', widget=forms.PasswordInput(
+        attrs={'class': 'form-control'}))

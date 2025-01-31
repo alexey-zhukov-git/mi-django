@@ -3,7 +3,7 @@ from django.http import HttpResponse
 from django.template import loader
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.forms import UserCreationForm
-from .forms import OrderForm, UserRegistrationForm
+from .forms import OrderForm, UserRegistrationForm, LoginForm
 from .models import Order
 from django.core.mail import send_mail
 from django.conf import settings
@@ -60,6 +60,22 @@ def registration(request):
         user_form = UserRegistrationForm()
     return render(request, 'main/registration.html', {'user_form': user_form})
     
+def user_login(request):
+    if request.method == 'POST':
+        username = request.POST['username']
+        password = request.POST['password']
+        user = authenticate(username=username, password=password)
+        if user is not None:
+            if user.is_active:
+                login(request, user)
+                return redirect('/accounts/profile/')
+            else:
+                return render(request, 'registration/login.html', {'error_message': 'Your account has been disabled'}, {'login_form': LoginForm()})
+        else:
+            return render(request, 'registration/login.html', {'error_message': 'Неверное имя пользователя или пароль', 'login_form': LoginForm()})
+    login_form = LoginForm()
+    return render(request, 'registration/login.html', {'login_form': login_form})
+
 def new_order(request):
     if request.method == "POST":
         form = OrderForm(request.POST)
