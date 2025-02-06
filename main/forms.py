@@ -41,3 +41,8 @@ class LoginForm(forms.Form):
     ))
     password = forms.CharField(label='Пароль', widget=forms.PasswordInput(
         attrs={'class': 'form-control'}))
+
+class ChangePasswordForm(forms.Form):
+    password = forms.CharField(label='Новый пароль', widget=forms.PasswordInput(
+        attrs={'class': 'form-control'}
+    ))

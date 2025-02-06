@@ -2,13 +2,11 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.template import loader
 from django.contrib.auth import login, authenticate
-from django.contrib.auth.forms import UserCreationForm
+#from django.contrib.auth.forms import UserCreationForm
 from .forms import OrderForm, UserRegistrationForm, LoginForm
 from .models import Order
 from django.core.mail import send_mail
 from django.conf import settings
-
-# Create your views here.
 
 def index(request):
     total_orders = Order.objects.count()
@@ -33,7 +31,6 @@ def contacts(request):
     context = {}
     return HttpResponse(template.render(context, request))
     
-
 def profile(request):
     id = request.user.id
     orders = Order.objects.filter(user_id=id)
