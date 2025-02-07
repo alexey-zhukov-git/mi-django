@@ -16,7 +16,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from main.views import registration, profile, new_order, view_order, edit_order, undo_order, user_login
+from main.views import registration, profile, new_order, view_order, edit_order, undo_order, user_login, change_password
 from django.contrib.auth import views as authViews
 from django.conf.urls.static import static
 from django.conf import settings
@@ -32,5 +32,6 @@ urlpatterns = [
     path('accounts/view/<int:pk>', view_order, name='view_order'),
     path('accounts/edit/<int:pk>/', edit_order, name='edit_order'),
     path('accounts/undo/<int:pk>/', undo_order, name='undo_order'),
-    path('captcha/', include('captcha.urls'))
+    path('captcha/', include('captcha.urls')),
+    path('accounts/change-password/', change_password, name='change_password'),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

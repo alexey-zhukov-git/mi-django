@@ -3,7 +3,7 @@ from django.http import HttpResponse
 from django.template import loader
 from django.contrib.auth import login, authenticate
 #from django.contrib.auth.forms import UserCreationForm
-from .forms import OrderForm, UserRegistrationForm, LoginForm
+from .forms import OrderForm, UserRegistrationForm, LoginForm, ChangePasswordForm
 from .models import Order
 from django.core.mail import send_mail
 from django.conf import settings
@@ -122,3 +122,18 @@ def privacy(request):
     template = loader.get_template('main/privacy-policy.html')
     context = {}
     return HttpResponse(template.render(context, request))
+
+def change_password(request):
+    if request.user.is_authenticated:
+        if request.method == 'POST':
+            fotm = ChangePasswordForm(request.POST)
+            if form.is_valid():
+                user = request.user
+                user.set_password(form.cleaned_data['password'])
+                user.save()
+                return redirect('/accounts/profile/')
+        else:
+            form = ChangePasswordForm()
+            return render(request, 'main/change_password.html', {'form': form})
+    else:
+        return redirect('/')
