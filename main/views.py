@@ -134,6 +134,7 @@ def change_password(request):
                 return redirect('/accounts/profile/')
         else:
             form = ChangePasswordForm()
-            return render(request, 'main/change_password.html', {'form': form})
+            user = request.user
+            return render(request, 'main/change_password.html', {'form': form, 'user': user})
     else:
         return redirect('/')
