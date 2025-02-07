@@ -126,7 +126,7 @@ def privacy(request):
 def change_password(request):
     if request.user.is_authenticated:
         if request.method == 'POST':
-            fotm = ChangePasswordForm(request.POST)
+            form = ChangePasswordForm(request.POST)
             if form.is_valid():
                 user = request.user
                 user.set_password(form.cleaned_data['password'])
