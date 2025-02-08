@@ -3,10 +3,12 @@ from django.http import HttpResponse
 from django.template import loader
 from django.contrib.auth import login, authenticate
 #from django.contrib.auth.forms import UserCreationForm
-from .forms import OrderForm, UserRegistrationForm, LoginForm, ChangePasswordForm
-from .models import Order
+from .forms import OrderForm, UserRegistrationForm, LoginForm, ChangePasswordForm, TokenToEmailForm
+from .models import Order, UserUniqueToken
 from django.core.mail import send_mail
 from django.conf import settings
+from django.contrib.auth import get_user_model
+User = get_user_model()
 
 def index(request):
     total_orders = Order.objects.count()
@@ -138,3 +140,22 @@ def change_password(request):
             return render(request, 'main/change_password.html', {'form': form, 'user': user})
     else:
         return redirect('/')
+
+def token_to_email(request):
+    if request.method == 'POST':
+        email = request.POST['email']
+        if User.objects.filter(email=email).exists():
+            user = User.objects.get(email=email)
+            user_email = user.email
+            user_id = user.id
+            token = '123'
+            UserUniqueToken.objects.create(user_id=user_id, token=token)
+            msg = 'Ваш токен: %s' % token
+            send_mail('Django mail', msg, 'mail@microintervals.ru', ['%s' % user_email], fail_silently=False)
+            return HttpResponse('Токен отправлен на почту %s' % user_email)
+        else:
+            return HttpResponse('Пользователь с почтовым адресом %s не зарегистрирован' % email)
+    else:
+        form = TokenToEmailForm()
+        return render(request, 'main/token_to_email.html', {'form': form})
+

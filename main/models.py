@@ -12,3 +12,7 @@ class Order(models.Model):
     status = models.CharField(verbose_name='status', max_length=50, default='Создано')
     created_at = models.DateTimeField(auto_now_add=True, db_index=True)
     edited_at = models.DateTimeField(auto_now=True)
+
+class UserUniqueToken(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    token = models.CharField(max_length=50, unique=True)

@@ -49,3 +49,8 @@ class ChangePasswordForm(forms.Form):
     password = forms.CharField(label='Новый пароль', widget=forms.PasswordInput(
         attrs={'class': 'form-control'}
     ))
+
+class TokenToEmailForm(forms.Form):
+    email = forms.EmailField(label='Email', widget=forms.EmailInput(
+        attrs={'class': 'form-control'}
+    ))
