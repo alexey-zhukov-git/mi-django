@@ -8,6 +8,7 @@ from .models import Order, UserUniqueToken
 from django.core.mail import send_mail
 from django.conf import settings
 from django.contrib.auth import get_user_model
+import uuid
 User = get_user_model()
 
 def index(request):
@@ -141,21 +142,29 @@ def change_password(request):
     else:
         return redirect('/')
 
-def token_to_email(request):
+def link_to_email(request):
     if request.method == 'POST':
         email = request.POST['email']
         if User.objects.filter(email=email).exists():
             user = User.objects.get(email=email)
             user_email = user.email
             user_id = user.id
-            token = '123'
+            token = uuid.uuid4().hex
             UserUniqueToken.objects.create(user_id=user_id, token=token)
-            msg = 'Ваш токен: %s' % token
+            msg = 'Ваша ссылка для авторизации: https://microintervals.ru/accounts/auth/%s/' % token
             send_mail('Django mail', msg, 'mail@microintervals.ru', ['%s' % user_email], fail_silently=False)
             return HttpResponse('Токен отправлен на почту %s' % user_email)
         else:
             return HttpResponse('Пользователь с почтовым адресом %s не зарегистрирован' % email)
     else:
         form = TokenToEmailForm()
-        return render(request, 'main/token_to_email.html', {'form': form})
+        return render(request, 'main/link_to_email.html', {'form': form})
 
+def token_auth(request, token):
+    if UserUniqueToken.objects.filter(token=token).exists():
+        user_id = UserUniqueToken.objects.get(token=token).user_id
+        user = User.objects.get(id=user_id)
+        login(request, user, backend='django.contrib.auth.backends.ModelBackend')
+        return redirect('/accounts/profile/')
+    else:
+        return HttpResponse('Токен не найден')
