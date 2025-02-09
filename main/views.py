@@ -9,6 +9,8 @@ from django.core.mail import send_mail
 from django.conf import settings
 from django.contrib.auth import get_user_model
 import uuid
+from django.utils import timezone
+from datetime import timedelta
 User = get_user_model()
 
 def index(request):
@@ -162,9 +164,14 @@ def link_to_email(request):
 
 def token_auth(request, token):
     if UserUniqueToken.objects.filter(token=token).exists():
-        user_id = UserUniqueToken.objects.get(token=token).user_id
-        user = User.objects.get(id=user_id)
-        login(request, user, backend='django.contrib.auth.backends.ModelBackend')
+        time_now = timezone.now()
+        token_time = UserUniqueToken.objects.get(token=token).datetime
+        if token_time < (time_now - timedelta(hours=1)):
+            return HttpResponse('Токен устарел')
+        else:
+            user_id = UserUniqueToken.objects.get(token=token).user_id
+            user = User.objects.get(id=user_id)
+            login(request, user, backend='django.contrib.auth.backends.ModelBackend')
         return redirect('/accounts/profile/')
     else:
         return HttpResponse('Токен не найден')
