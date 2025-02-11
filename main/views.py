@@ -153,11 +153,11 @@ def link_to_email(request):
             user_id = user.id
             token = uuid.uuid4().hex
             UserUniqueToken.objects.create(user_id=user_id, token=token)
-            msg = 'Ваша ссылка для авторизации: https://microintervals.ru/accounts/auth/%s/' % token
+            msg = 'Ваша ссылка для авторизации: https://microintervals.ru/accounts/auth/%s/ Ссылка действительна 2 часа.' % token
             send_mail('Django mail', msg, 'mail@microintervals.ru', ['%s' % user_email], fail_silently=False)
-            return HttpResponse('Токен отправлен на почту %s' % user_email)
+            return render(request, 'main/link_to_email_success.html', {'user_email': user_email})
         else:
-            return HttpResponse('Пользователь с почтовым адресом %s не зарегистрирован' % email)
+            return render(request, 'main/link_to_email_error.html')
     else:
         form = TokenToEmailForm()
         return render(request, 'main/link_to_email.html', {'form': form})
@@ -166,7 +166,7 @@ def token_auth(request, token):
     if UserUniqueToken.objects.filter(token=token).exists():
         time_now = timezone.now()
         token_time = UserUniqueToken.objects.get(token=token).datetime
-        if token_time < (time_now - timedelta(hours=1)):
+        if token_time < (time_now - timedelta(hours=2)):
             return HttpResponse('Токен устарел')
         else:
             user_id = UserUniqueToken.objects.get(token=token).user_id
