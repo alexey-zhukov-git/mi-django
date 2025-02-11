@@ -153,7 +153,7 @@ def link_to_email(request):
             user_id = user.id
             token = uuid.uuid4().hex
             UserUniqueToken.objects.create(user_id=user_id, token=token)
-            msg = 'Ваша ссылка для авторизации: https://microintervals.ru/accounts/auth/%s/ Ссылка действительна 2 часа.' % token
+            msg = 'Ваша ссылка для авторизации: https://microintervals.ru/accounts/auth/%s Ссылка действительна 2 часа.' % token
             send_mail('Django mail', msg, 'mail@microintervals.ru', ['%s' % user_email], fail_silently=False)
             return render(request, 'main/link_to_email_success.html', {'user_email': user_email})
         else:
