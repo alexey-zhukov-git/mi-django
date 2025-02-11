@@ -1,11 +1,8 @@
-<!DOCTYPE html>
-<html>
-<title>Wrong address</title>
-<body>
+{% extends "main/base.html" %}
 
-<h1>Ooops!</h1>
+{% block title %}Страница не найдена{% endblock %}
 
-<h2>I cannot find the file you requested!</h2>
-
-</body>
-</html> 
+{% block content %}
+<h2><u>404</u></h2>
+<p>Страница не найдена</p>
+{% endblock %}
