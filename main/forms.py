@@ -54,3 +54,5 @@ class TokenToEmailForm(forms.Form):
     email = forms.EmailField(label='Email', widget=forms.EmailInput(
         attrs={'class': 'form-control'}
     ))
+    captcha = CaptchaField(label='Введите текст с картинки',
+        error_messages={'invalid': 'Неправильный текст'})
