@@ -1,0 +1,66 @@
+{% extends "main/base.html" %}
+
+{% block title %}Статья об авторизации по ссылке{% endblock %}
+
+{% block content %}
+<h2>Реализация функционала авторизации по ссылке на Django</h2>
+<p>Представляю Вашему вниманию небольшую стаью об авторизации по ссылке для Django.</p>
+<p><b>План по пунтам:</b></p>
+<p>
+1. Создаем модель TokenToEmailForm в файле forms.py.<br>
+2. Создаем модель UserUniqueToken в файле models.py.<br>
+3. Создаем представление link_to_email в файле views.py.<br>
+4. Создаем представление token_auth в файле views.py.<br>
+5. Создаем шаблон link_to_email.html в файле templates/link_to_email.html.<br>
+6. Создаем шаблон link_to_email_success.html в файле templates/link_to_email_success.html.<br>
+7. Создаем шаблон link_to_email_error.html в файле templates/link_to_email_error.html.<br>
+</p>
+<p><b>Реализация плана:</b></p>
+<p>1. Создаем модель TokenToEmailForm в файле forms.py.</p>
+<pre><code>class TokenToEmailForm(forms.Form):
+    email = forms.EmailField(label='Email', widget=forms.EmailInput())
+</code></pre>
+<p>2. Создаем модель UserUniqueToken в файле models.py.</p>
+<pre><code>class UserUniqueToken(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    token = models.CharField(max_length=50, unique=True)
+    datetime = models.DateTimeField(auto_now_add=True)
+</code></pre>
+<p>3. Создаем представление link_to_email в файле views.py.</p>      
+<pre><code>def link_to_email(request):
+if request.method == 'POST':
+    email = request.POST['email']
+    if User.objects.filter(email=email).exists():
+        user = User.objects.get(email=email)
+        user_email = user.email
+        user_id = user.id
+        token = uuid.uuid4().hex
+        UserUniqueToken.objects.create(user_id=user_id, token=token)
+        msg = 'Ваша ссылка для авторизации: https://microintervals.ru/accounts/auth/%s Ссылка действительна 2 часа.' % token
+        send_mail('Django mail', msg, 'mail@microintervals.ru', ['%s' % user_email], fail_silently=False)
+        return render(request, 'main/link_to_email_success.html', {'user_email': user_email})
+    else:
+        return render(request, 'main/link_to_email_error.html')
+else:
+    form = TokenToEmailForm()
+    return render(request, 'main/link_to_email.html', {'form': form})
+</code></pre>
+<p>4. Создаем представление token_auth в файле views.py.</p>
+<pre><code>def token_auth(request, token):
+if UserUniqueToken.objects.filter(token=token).exists():
+    time_now = timezone.now()
+    token_time = UserUniqueToken.objects.get(token=token).datetime
+    if token_time < (time_now - timedelta(hours=2)):
+        return render(request, 'main/token_auth_error.html')
+    else:
+        user_id = UserUniqueToken.objects.get(token=token).user_id
+        user = User.objects.get(id=user_id)
+        login(request, user, backend='django.contrib.auth.backends.ModelBackend')
+    return redirect('/accounts/profile/')
+else:
+    return render(request, 'main/404.html')
+</code></pre>
+<p>5. Создаем шаблон link_to_email.html в файле templates/link_to_email.html.</p>
+<p>6. Создаем шаблон link_to_email_success.html в файле templates/link_to_email_success.html.</p>
+<p>7. Создаем шаблон link_to_email_error.html в файле templates/link_to_email_error.html.</p>
+{% endblock %}

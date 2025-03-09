@@ -175,3 +175,9 @@ def token_auth(request, token):
         return redirect('/accounts/profile/')
     else:
         return render(request, 'main/404.html')
+    
+def blog_index(request):
+    return render(request, 'blog/index.html')
+
+def authorization_via_link(request):
+    return render(request, 'blog/authorization_via_link.html')

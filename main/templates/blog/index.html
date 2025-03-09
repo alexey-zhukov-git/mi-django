@@ -1,0 +1,8 @@
+{% extends "main/base.html" %}
+
+{% block title %}Блог{% endblock %}
+
+{% block content %}
+<h2><u>Блог</u></h2>
+<p>Привет! Я <a href="{% url 'authorization_via_link' %}">статья</a> об авторизации по ссылке для Django.</p>
+{% endblock %}

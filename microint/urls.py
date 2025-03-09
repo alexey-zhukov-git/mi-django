@@ -16,13 +16,15 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from main.views import registration, profile, new_order, view_order, edit_order, undo_order, user_login, change_password, link_to_email, token_auth
+from main.views import registration, profile, new_order, view_order, edit_order, undo_order, user_login, change_password, link_to_email, token_auth, blog_index, authorization_via_link
 from django.contrib.auth import views as authViews
 from django.conf.urls.static import static
 from django.conf import settings
 
 urlpatterns = [
     path('', include('main.urls')),
+    path('blog/', blog_index, name='blog_index'),
+    path('blog/authorization-via-link', authorization_via_link, name='authorization_via_link'),
     path('admin/', admin.site.urls),
     path('accounts/registration/', registration, name='registration'),
     path('accounts/logout/', authViews.LogoutView.as_view(next_page='/'), name='logout'),
