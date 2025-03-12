@@ -17,17 +17,17 @@
 </p>
 <p><b>Реализация плана:</b></p>
 <p>1. Создаем модель TokenToEmailForm в файле forms.py.</p>
-<pre><code>class TokenToEmailForm(forms.Form):
+<pre>class TokenToEmailForm(forms.Form):
     email = forms.EmailField(label='Email', widget=forms.EmailInput())
-</code></pre>
+</pre>
 <p>2. Создаем модель UserUniqueToken в файле models.py.</p>
-<pre><code>class UserUniqueToken(models.Model):
+<pre>class UserUniqueToken(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     token = models.CharField(max_length=50, unique=True)
     datetime = models.DateTimeField(auto_now_add=True)
-</code></pre>
+</pre>
 <p>3. Создаем представление link_to_email в файле views.py.</p>      
-<pre><code>def link_to_email(request):
+<pre>def link_to_email(request):
 if request.method == 'POST':
     email = request.POST['email']
     if User.objects.filter(email=email).exists():
@@ -44,9 +44,9 @@ if request.method == 'POST':
 else:
     form = TokenToEmailForm()
     return render(request, 'main/link_to_email.html', {'form': form})
-</code></pre>
+</pre>
 <p>4. Создаем представление token_auth в файле views.py.</p>
-<pre><code>def token_auth(request, token):
+<pre>def token_auth(request, token):
 if UserUniqueToken.objects.filter(token=token).exists():
     time_now = timezone.now()
     token_time = UserUniqueToken.objects.get(token=token).datetime
@@ -59,7 +59,7 @@ if UserUniqueToken.objects.filter(token=token).exists():
     return redirect('/accounts/profile/')
 else:
     return render(request, 'main/404.html')
-</code></pre>
+</pre>
 <p>5. Создаем шаблон link_to_email.html в файле templates/link_to_email.html.</p>
 <p>6. Создаем шаблон link_to_email_success.html в файле templates/link_to_email_success.html.</p>
 <p>7. Создаем шаблон link_to_email_error.html в файле templates/link_to_email_error.html.</p>
