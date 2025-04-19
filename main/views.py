@@ -86,7 +86,7 @@ def new_order(request):
             post.user_id = request.user.id
             post.save()
             x = request.user.email
-            msg = f'На сайте создан новый кейс. Создал пользователь с email {x}'
+            msg = 'На сайте создан новый кейс. Создал пользователь с email {x}'.format(x=x)
             send_mail('Django mail', msg, 'mail@microintervals.ru', ['myshakhovskaya@yandex.ru'], fail_silently=False)
             return redirect('/accounts/profile/', pk=post.pk)
     else:
