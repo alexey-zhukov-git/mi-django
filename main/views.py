@@ -56,7 +56,7 @@ def registration(request):
             new_user.save()
             login(request, new_user, backend='django.contrib.auth.backends.ModelBackend')
             msg = 'Пользователь с email %s зарегистрирован' % new_user.email
-            send_mail('Django mail', msg, 'mail@microintervals.ru', ['a@core-i5.ru'], fail_silently=False)
+            send_mail('Django mail', msg, 'mail@microintervals.ru', ['myshakhovskaya@yandex.ru'], fail_silently=False)
             return render(request, 'main/profile.html', {'new_user': new_user})
     else:
         user_form = UserRegistrationForm()
@@ -85,8 +85,8 @@ def new_order(request):
             post = form.save(commit=False)
             post.user_id = request.user.id
             post.save()
-            msg = 'На сайте создан новый кейс. Создал пользователь %s' % request.user.email
-            send_mail('Django mail', msg, 'mail@microintervals.ru', ['a@core-i5.ru'], fail_silently=False)
+            msg = 'На сайте создан новый кейс. Создал пользователь %s. Название кейса: %s' % request.user.email % post.title
+            send_mail('Django mail', msg, 'mail@microintervals.ru', ['myshakhovskaya@yandex.ru'], fail_silently=False)
             return redirect('/accounts/profile/', pk=post.pk)
     else:
         form = OrderForm()
