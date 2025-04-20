@@ -85,8 +85,12 @@ def new_order(request):
             post = form.save(commit=False)
             post.user_id = request.user.id
             post.save()
-            x = 1
-            send_mail('Django mail', x, 'mail@microintervals.ru', ['myshakhovskaya@yandex.ru'], fail_silently=False)
+            user_email = request.user.email
+            order_title = post.title
+            order_content = post.content
+            order_price = post.price
+            msg = 'Новый заказ от пользователя %s. Тема: %s. Содержание: %s. Цена: %s' % (user_email, order_title, order_content, order_price)
+            send_mail('Django mail', msg, 'mail@microintervals.ru', ['myshakhovskaya@yandex.ru'], fail_silently=False)
             return redirect('/accounts/profile/', pk=post.pk)
     else:
         form = OrderForm()
