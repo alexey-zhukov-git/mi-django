@@ -4,7 +4,7 @@ from django.template import loader
 from django.contrib.auth import login, authenticate
 #from django.contrib.auth.forms import UserCreationForm
 from .forms import OrderForm, UserRegistrationForm, LoginForm, ChangePasswordForm, TokenToEmailForm
-from .models import Order, UserUniqueToken
+from .models import Order, UserUniqueToken, EmailVerificationToken
 from django.core.mail import send_mail
 from django.conf import settings
 from django.contrib.auth import get_user_model
@@ -56,7 +56,12 @@ def registration(request):
             new_user.save()
             login(request, new_user, backend='django.contrib.auth.backends.ModelBackend')
             msg = 'Пользователь с email %s зарегистрирован' % new_user.email
-            send_mail('Django mail', msg, 'mail@microintervals.ru', ['myshakhovskaya@yandex.ru'], fail_silently=False)
+            send_mail('Регистрация пользователя', msg, 'mail@microintervals.ru', ['myshakhovskaya@yandex.ru'], fail_silently=False)
+            token = uuid.uuid4().hex
+            user_id = new_user.id
+            EmailVerificationToken.objects.create(user_id=user_id, token=token)
+            msg = 'Вы зарегистрировались на сайте microintervals.ru. Пожалуйста, подтвердите почту по ссылке https://microintervals.ru/email-verification/%s/' % token
+            send_mail('Подтверждение почты', msg, 'mail@microintervals.ru', ['%s' % new_user.email], fail_silently=False)
             return render(request, 'main/profile.html', {'new_user': new_user})
     else:
         user_form = UserRegistrationForm()
@@ -185,3 +190,11 @@ def blog_index(request):
 
 def authorization_via_link(request):
     return render(request, 'blog/authorization_via_link.html')
+
+def email_verification(request, token):
+    if EmailVerificationToken.objects.filter(token=token).exists():
+        User.objects.filter(id=EmailVerificationToken.objects.get(token=token).user_id).update(email_verified=True)
+        EmailVerificationToken.objects.filter(token=token).delete()
+        return render(request, 'main/email_verification_success.html')
+    else:
+        return render(request, 'main/404.html')

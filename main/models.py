@@ -17,3 +17,8 @@ class UserUniqueToken(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     token = models.CharField(max_length=50, unique=True)
     datetime = models.DateTimeField(auto_now_add=True)
+
+class EmailVerificationToken(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    token = models.CharField(max_length=50, unique=True)
+    datetime = models.DateTimeField(auto_now_add=True)
