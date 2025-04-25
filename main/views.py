@@ -176,10 +176,12 @@ def token_auth(request, token):
         time_now = timezone.now()
         token_time = UserUniqueToken.objects.get(token=token).datetime
         if token_time < (time_now - timedelta(hours=2)):
+            UserUniqueToken.objects.filter(token=token).delete()
             return render(request, 'main/token_auth_error.html')
         else:
             user_id = UserUniqueToken.objects.get(token=token).user_id
             user = User.objects.get(id=user_id)
+            UserUniqueToken.objects.filter(token=token).delete()
             login(request, user, backend='django.contrib.auth.backends.ModelBackend')
         return redirect('/accounts/profile/')
     else:
