@@ -39,4 +39,5 @@ urlpatterns = [
     path('captcha/', include('captcha.urls')),
     path('accounts/change-password/', change_password, name='change_password'),
     path('accounts/link-to-email', link_to_email, name='link_to_email'),
+    path('accounts/', include('allauth.urls')), # Это очень важно!
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
