@@ -20,6 +20,8 @@ from main.views import registration, profile, new_order, view_order, edit_order,
 from django.contrib.auth import views as authViews
 from django.conf.urls.static import static
 from django.conf import settings
+from django.urls import re_path
+from django.views.static import serve
 
 urlpatterns = [
     path('', include('main.urls')),
@@ -40,4 +42,5 @@ urlpatterns = [
     path('accounts/change-password/', change_password, name='change_password'),
     path('accounts/link-to-email', link_to_email, name='link_to_email'),
     path('accounts/', include('allauth.urls')), # Это очень важно!
+    re_path(r'^static/(?P<path>.*)$', serve,{'document_root': settings.STATIC_ROOT}),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
