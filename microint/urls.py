@@ -41,6 +41,5 @@ urlpatterns = [
     path('captcha/', include('captcha.urls')),
     path('accounts/change-password/', change_password, name='change_password'),
     path('accounts/link-to-email', link_to_email, name='link_to_email'),
-    path('social/', include('social_django.urls', namespace='social')),
     re_path(r'^static/(?P<path>.*)$', serve,{'document_root': settings.STATIC_ROOT}),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
