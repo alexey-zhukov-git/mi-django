@@ -53,8 +53,10 @@
             <div class="panel panel-primary">
                 <div class="panel-heading">В работе</div>
                 <div class="panel-body">
-                    <span class="badge">{{ in_progress_orders}}</span>
-                    <div><br /></div>
+                    <p><span class="badge">{{ in_progress_orders }}</span></p>
+                    <p>Сейчас в работе:<br/>
+                        Интернет-магазин для художника
+                    </p>
                     <!--<div class="progress">
                     <div class="progress-bar progress-bar-primary" role="progressbar" style="width: 0%">
                     </div>
@@ -66,7 +68,6 @@
                 <div class="panel-heading">Завершено</div>
                 <div class="panel-body">
                     <span class="badge">{{ done_orders }}</span>
-                    <div><br /></div>
                     <!--<div class="progress">
                         <div class="progress-bar progress-bar-success" role="progressbar" style="width: 0%">
                         </div>
@@ -78,7 +79,6 @@
                 <div class="panel-heading">На рассмотрении</div>
                 <div class="panel-body">
                     <span class="badge">{{ under_consideration_orders }}</span>
-                    <div><br /></div>
                     <!--<div class="progress">
                     <div class="progress-bar progress-bar-info" role="progressbar" style="width: 0%">
                     </div>
